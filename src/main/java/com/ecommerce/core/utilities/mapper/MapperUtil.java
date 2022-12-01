@@ -1,4 +1,4 @@
-package com.ecommerce.core.utilities;
+package com.ecommerce.core.utilities.mapper;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +22,7 @@ public final class MapperUtil {
      * @param <T>      type of source object.
      * @param entity   entity that needs to be mapped.
      * @param outClass class of result object.
-     * @return new object of <code>outClass</code> type.
+     * @return         new object of result type.
      */
     public static <D, T> D map(final T entity, Class<D> outClass) {
         return modelMapper.map(entity, outClass);
@@ -33,7 +33,7 @@ public final class MapperUtil {
      * @param outCLass   class of result list element.
      * @param <D>        type of objects in result list.
      * @param <T>        type of entity in entity list.
-     * @return list of mapped object.
+     * @return           list of mapped object.
      */
     public static <D, T> List<D> mapAll(final Collection<T> entityList, Class<D> outCLass) {
         return entityList.stream()

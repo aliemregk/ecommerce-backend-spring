@@ -2,6 +2,8 @@ package com.ecommerce.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,17 +45,17 @@ public class ProductsController {
     }
 
     @PostMapping(path = "/add")
-    public void add(@RequestBody AddProductRequest addProductRequest) {
+    public void add(@RequestBody @Valid AddProductRequest addProductRequest) {
         productService.add(addProductRequest);
     }
 
     @PutMapping(path = "/update")
-    public void update(@RequestBody UpdateProductRequest updateProductRequest) {
+    public void update(@RequestBody @Valid UpdateProductRequest updateProductRequest) {
         productService.update(updateProductRequest);
     }
 
     @DeleteMapping(path = "/delete")
-    public void delete(@RequestBody DeleteProductRequest deleteProductRequest) {
+    public void delete(@RequestBody @Valid DeleteProductRequest deleteProductRequest) {
         productService.delete(deleteProductRequest);
     }
 

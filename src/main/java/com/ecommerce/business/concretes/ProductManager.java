@@ -12,7 +12,7 @@ import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
-import com.ecommerce.core.utilities.MapperUtil;
+import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.dataAccess.abstracts.ProductRepository;
 import com.ecommerce.entities.concretes.Product;
 
