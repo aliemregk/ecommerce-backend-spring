@@ -1,6 +1,5 @@
 package com.ecommerce.business.concretes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +12,7 @@ import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
+import com.ecommerce.core.utilities.MapperUtil;
 import com.ecommerce.dataAccess.abstracts.ProductRepository;
 import com.ecommerce.entities.concretes.Product;
 
@@ -28,21 +28,7 @@ public class ProductManager implements ProductService {
 
     @Override
     public List<GetAllProductResponse> getAll() {
-        List<Product> products = productRepository.findAll();
-        List<GetAllProductResponse> productResponse = new ArrayList<GetAllProductResponse>();
-
-        for (Product product : products) {
-            GetAllProductResponse response = new GetAllProductResponse(
-                    product.getId(),
-                    product.getName(),
-                    product.getDescription(),
-                    product.getStock(),
-                    product.getUnitPrice(),
-                    product.getDiscount());
-
-            productResponse.add(response);
-        }
-        return productResponse;
+        return MapperUtil.mapAll(productRepository.findAll(), GetAllProductResponse.class);
     }
 
     @Override
@@ -50,26 +36,14 @@ public class ProductManager implements ProductService {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isPresent()) {
-            return new GetByIdProductResponse(
-                    product.get().getName(),
-                    product.get().getDescription(),
-                    product.get().getStock(),
-                    product.get().getUnitPrice(),
-                    product.get().getDiscount());
+            return MapperUtil.map(product.get(), GetByIdProductResponse.class);
         }
         return null;
     }
 
     @Override
     public void add(AddProductRequest addProductRequest) {
-        Product productToAdd = new Product(
-                0,
-                addProductRequest.getName(),
-                addProductRequest.getDescription(),
-                addProductRequest.getStock(),
-                addProductRequest.getUnitPrice(),
-                addProductRequest.getDiscount());
-        productRepository.save(productToAdd);
+        productRepository.save(MapperUtil.map(addProductRequest, Product.class));
     }
 
     @Override
@@ -77,14 +51,7 @@ public class ProductManager implements ProductService {
         Optional<Product> productToUpdate = productRepository.findById(updateProductRequest.getId());
 
         if (productToUpdate.isPresent()) {
-            Product updatedProduct = new Product(
-                    updateProductRequest.getId(),
-                    updateProductRequest.getName(),
-                    updateProductRequest.getDescription(),
-                    updateProductRequest.getStock(),
-                    updateProductRequest.getUnitPrice(),
-                    updateProductRequest.getDiscount());
-            productRepository.save(updatedProduct);
+            productRepository.save(MapperUtil.map(updateProductRequest, Product.class));
         }
     }
 
