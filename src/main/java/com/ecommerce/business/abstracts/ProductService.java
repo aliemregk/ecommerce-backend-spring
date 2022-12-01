@@ -2,17 +2,21 @@ package com.ecommerce.business.abstracts;
 
 import java.util.List;
 
-import com.ecommerce.entities.concretes.Product;
+import com.ecommerce.business.requests.product.AddProductRequest;
+import com.ecommerce.business.requests.product.DeleteProductRequest;
+import com.ecommerce.business.requests.product.UpdateProductRequest;
+import com.ecommerce.business.responses.product.GetAllProductResponse;
+import com.ecommerce.business.responses.product.GetByIdProductResponse;
 
 public interface ProductService {
 
-    List<Product> getAll();
+    List<GetAllProductResponse> getAll();
 
-    Product getById(int id);
+    GetByIdProductResponse getById(int id);
 
-    void add(Product product);
+    void add(AddProductRequest addProductRequest);
 
-    void update(Product product);
+    void update(UpdateProductRequest updateProductRequest);
 
-    void delete(int id);
+    void delete(DeleteProductRequest deleteProductRequest);
 }
