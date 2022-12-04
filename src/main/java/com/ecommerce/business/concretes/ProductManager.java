@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.business.abstracts.ProductService;
@@ -26,9 +29,10 @@ public class ProductManager implements ProductService {
         this.productRepository = productRepository;
     }
 
+    @Cacheable(value = "products")
     @Override
     public List<GetAllProductResponse> getAll() {
-        return MapperUtil.mapAll(productRepository.findAll(), GetAllProductResponse.class);
+        return MapperUtil.mapAll(productRepository.findAll(Sort.by(Sort.Direction.ASC)), GetAllProductResponse.class);
     }
 
     @Override
@@ -41,11 +45,13 @@ public class ProductManager implements ProductService {
         return null;
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Override
     public void add(AddProductRequest addProductRequest) {
         productRepository.save(MapperUtil.map(addProductRequest, Product.class));
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Override
     public void update(UpdateProductRequest updateProductRequest) {
         Optional<Product> productToUpdate = productRepository.findById(updateProductRequest.getId());
@@ -55,6 +61,7 @@ public class ProductManager implements ProductService {
         }
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Override
     public void delete(DeleteProductRequest deleteProductRequest) {
         Optional<Product> productToDelete = productRepository.findById(deleteProductRequest.getId());
