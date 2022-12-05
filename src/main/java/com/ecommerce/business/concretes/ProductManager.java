@@ -19,10 +19,10 @@ import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.core.utilities.results.ErrorResult;
 import com.ecommerce.core.utilities.results.Result;
 import com.ecommerce.core.utilities.results.SuccessResult;
-import com.ecommerce.core.utilities.results.dataResults.DataResult;
-import com.ecommerce.core.utilities.results.dataResults.ErrorDataResult;
-import com.ecommerce.core.utilities.results.dataResults.SuccessDataResult;
-import com.ecommerce.dataAccess.abstracts.ProductRepository;
+import com.ecommerce.core.utilities.results.dataresults.DataResult;
+import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
+import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
+import com.ecommerce.dataaccess.abstracts.ProductRepository;
 import com.ecommerce.entities.concretes.Product;
 
 @Service

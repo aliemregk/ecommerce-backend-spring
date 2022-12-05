@@ -8,7 +8,7 @@ import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.results.Result;
-import com.ecommerce.core.utilities.results.dataResults.DataResult;
+import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
 public interface ProductService {
 

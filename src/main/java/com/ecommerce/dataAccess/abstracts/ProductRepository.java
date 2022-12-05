@@ -1,4 +1,4 @@
-package com.ecommerce.dataAccess.abstracts;
+package com.ecommerce.dataaccess.abstracts;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

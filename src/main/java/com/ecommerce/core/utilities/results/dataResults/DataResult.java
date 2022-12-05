@@ -1,4 +1,4 @@
-package com.ecommerce.core.utilities.results.dataResults;
+package com.ecommerce.core.utilities.results.dataresults;
 
 import com.ecommerce.core.utilities.results.Result;
 
