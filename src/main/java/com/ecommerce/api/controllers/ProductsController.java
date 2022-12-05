@@ -23,6 +23,7 @@ import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.results.Result;
+import com.ecommerce.core.utilities.results.ResultChecker;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
 @RestController
@@ -39,44 +40,27 @@ public class ProductsController {
 
     @GetMapping(path = "/getall")
     public ResponseEntity<DataResult<List<GetAllProductResponse>>> getAll() {
-        DataResult<List<GetAllProductResponse>> result = productService.getAll();
-        return ResponseEntity.ok(result);
+        return ResultChecker.checkResult(productService.getAll());
     }
 
     @GetMapping(path = "/getbyid")
     public ResponseEntity<DataResult<GetByIdProductResponse>> getById(@RequestParam int id) {
-        DataResult<GetByIdProductResponse> result = productService.getProductById(id);
-        if (result.isSuccess()) {
-            return ResponseEntity.ok(result);
-        }
-        return ResponseEntity.badRequest().body(result);
+        return ResultChecker.checkResult(productService.getProductById(id));
     }
 
     @PostMapping(path = "/add")
     public ResponseEntity<Result> add(@RequestBody @Valid AddProductRequest addProductRequest) {
-        Result result = productService.add(addProductRequest);
-        if (result.isSuccess()) {
-            return ResponseEntity.ok(result);
-        }
-        return ResponseEntity.badRequest().body(result);
+        return ResultChecker.checkResult(productService.add(addProductRequest));
     }
 
     @PutMapping(path = "/update")
     public ResponseEntity<Result> update(@RequestBody @Valid UpdateProductRequest updateProductRequest) {
-        Result result = productService.update(updateProductRequest);
-        if (result.isSuccess()) {
-            return ResponseEntity.ok(result);
-        }
-        return ResponseEntity.badRequest().body(result);
+        return ResultChecker.checkResult(productService.update(updateProductRequest));
     }
 
     @DeleteMapping(path = "/delete")
     public ResponseEntity<Result> delete(@RequestBody @Valid DeleteProductRequest deleteProductRequest) {
-        Result result = productService.delete(deleteProductRequest);
-        if (result.isSuccess()) {
-            return ResponseEntity.ok(result);
-        }
-        return ResponseEntity.badRequest().body(result);
+        return ResultChecker.checkResult(productService.delete(deleteProductRequest));
     }
 
 }
