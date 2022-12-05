@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,8 @@ import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
+import com.ecommerce.core.utilities.results.Result;
+import com.ecommerce.core.utilities.results.dataResults.DataResult;
 
 @RestController
 @RequestMapping("/api/products")
@@ -35,28 +38,45 @@ public class ProductsController {
     }
 
     @GetMapping(path = "/getall")
-    public List<GetAllProductResponse> getAll() {
-        return productService.getAll();
+    public ResponseEntity<DataResult<List<GetAllProductResponse>>> getAll() {
+        DataResult<List<GetAllProductResponse>> result = productService.getAll();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping(path = "/getbyid")
-    public GetByIdProductResponse getById(@RequestParam int id) {
-        return productService.getById(id);
+    public ResponseEntity<DataResult<GetByIdProductResponse>> getById(@RequestParam int id) {
+        DataResult<GetByIdProductResponse> result = productService.getProductById(id);
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().body(result);
     }
 
     @PostMapping(path = "/add")
-    public void add(@RequestBody @Valid AddProductRequest addProductRequest) {
-        productService.add(addProductRequest);
+    public ResponseEntity<Result> add(@RequestBody @Valid AddProductRequest addProductRequest) {
+        Result result = productService.add(addProductRequest);
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().body(result);
     }
 
     @PutMapping(path = "/update")
-    public void update(@RequestBody @Valid UpdateProductRequest updateProductRequest) {
-        productService.update(updateProductRequest);
+    public ResponseEntity<Result> update(@RequestBody @Valid UpdateProductRequest updateProductRequest) {
+        Result result = productService.update(updateProductRequest);
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().body(result);
     }
 
     @DeleteMapping(path = "/delete")
-    public void delete(@RequestBody @Valid DeleteProductRequest deleteProductRequest) {
-        productService.delete(deleteProductRequest);
+    public ResponseEntity<Result> delete(@RequestBody @Valid DeleteProductRequest deleteProductRequest) {
+        Result result = productService.delete(deleteProductRequest);
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().body(result);
     }
 
 }

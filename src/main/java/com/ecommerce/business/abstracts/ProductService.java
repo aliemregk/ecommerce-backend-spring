@@ -7,16 +7,18 @@ import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
+import com.ecommerce.core.utilities.results.Result;
+import com.ecommerce.core.utilities.results.dataResults.DataResult;
 
 public interface ProductService {
 
-    List<GetAllProductResponse> getAll();
+    DataResult<List<GetAllProductResponse>> getAll();
 
-    GetByIdProductResponse getById(int id);
+    DataResult<GetByIdProductResponse> getProductById(int id);
 
-    void add(AddProductRequest addProductRequest);
+    Result add(AddProductRequest addProductRequest);
 
-    void update(UpdateProductRequest updateProductRequest);
+    Result update(UpdateProductRequest updateProductRequest);
 
-    void delete(DeleteProductRequest deleteProductRequest);
+    Result delete(DeleteProductRequest deleteProductRequest);
 }

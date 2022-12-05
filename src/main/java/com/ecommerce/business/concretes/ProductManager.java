@@ -16,6 +16,12 @@ import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
+import com.ecommerce.core.utilities.results.ErrorResult;
+import com.ecommerce.core.utilities.results.Result;
+import com.ecommerce.core.utilities.results.SuccessResult;
+import com.ecommerce.core.utilities.results.dataResults.DataResult;
+import com.ecommerce.core.utilities.results.dataResults.ErrorDataResult;
+import com.ecommerce.core.utilities.results.dataResults.SuccessDataResult;
 import com.ecommerce.dataAccess.abstracts.ProductRepository;
 import com.ecommerce.entities.concretes.Product;
 
@@ -31,44 +37,51 @@ public class ProductManager implements ProductService {
 
     @Cacheable(value = "products")
     @Override
-    public List<GetAllProductResponse> getAll() {
-        return MapperUtil.mapAll(productRepository.findAll(Sort.by(Sort.Direction.ASC)), GetAllProductResponse.class);
+    public DataResult<List<GetAllProductResponse>> getAll() {
+        return new SuccessDataResult<>(
+                MapperUtil.mapAll(productRepository.findAll(Sort.by(Sort.Direction.ASC, "id")),
+                        GetAllProductResponse.class));
     }
 
     @Override
-    public GetByIdProductResponse getById(int id) {
+    public DataResult<GetByIdProductResponse> getProductById(int id) {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isPresent()) {
-            return MapperUtil.map(product.get(), GetByIdProductResponse.class);
+            return new SuccessDataResult<>(MapperUtil.map(product.get(), GetByIdProductResponse.class));
         }
-        return null;
+        return new ErrorDataResult<>("Not found", null);
     }
 
     @CacheEvict(value = "products", allEntries = true)
     @Override
-    public void add(AddProductRequest addProductRequest) {
+    public Result add(AddProductRequest addProductRequest) {
         productRepository.save(MapperUtil.map(addProductRequest, Product.class));
+        return new SuccessResult("Added.");
     }
 
     @CacheEvict(value = "products", allEntries = true)
     @Override
-    public void update(UpdateProductRequest updateProductRequest) {
+    public Result update(UpdateProductRequest updateProductRequest) {
         Optional<Product> productToUpdate = productRepository.findById(updateProductRequest.getId());
 
         if (productToUpdate.isPresent()) {
             productRepository.save(MapperUtil.map(updateProductRequest, Product.class));
+            return new SuccessResult("Updated.");
         }
+        return new ErrorResult("Product not found.");
     }
 
     @CacheEvict(value = "products", allEntries = true)
     @Override
-    public void delete(DeleteProductRequest deleteProductRequest) {
+    public Result delete(DeleteProductRequest deleteProductRequest) {
         Optional<Product> productToDelete = productRepository.findById(deleteProductRequest.getId());
 
         if (productToDelete.isPresent()) {
             productRepository.delete(productToDelete.get());
+            return new SuccessResult("Deleted.");
         }
+        return new ErrorResult("Product not found.");
     }
 
 }
