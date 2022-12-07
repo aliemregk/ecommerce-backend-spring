@@ -10,11 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.business.abstracts.UserService;
-import com.ecommerce.business.requests.user.AddUserRequest;
+import com.ecommerce.business.requests.auth.RegisterRequest;
 import com.ecommerce.business.requests.user.DeleteUserRequest;
 import com.ecommerce.business.requests.user.UpdateUserRequest;
 import com.ecommerce.business.responses.user.GetAllUserResponse;
-import com.ecommerce.business.responses.user.GetByEmailUserResponse;
 import com.ecommerce.business.responses.user.GetByIdUserResponse;
 import com.ecommerce.core.dataaccess.UserRepository;
 import com.ecommerce.core.entities.User;
@@ -54,23 +53,21 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public DataResult<GetByEmailUserResponse> getByEmail(String email) {
+    public DataResult<User> getByEmail(String email) {
         Optional<User> result = userRepository.getByEmail(email);
         if (result.isPresent()) {
-            return new SuccessDataResult<>(
-                    MapperUtil.map(result.get(), GetByEmailUserResponse.class));
+            return new SuccessDataResult<>(result.get());
         }
         return new ErrorDataResult<>("Email not taken.", null);
     }
 
-    @CacheEvict(value = "users",allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
-    public Result add(AddUserRequest addUserRequest) {
-        userRepository.save(MapperUtil.map(addUserRequest, User.class));
-        return new SuccessResult("User added.");
+    public DataResult<User> add(RegisterRequest addUserRequest) {
+        return new SuccessDataResult<>("User added.", userRepository.save(MapperUtil.map(addUserRequest, User.class)));
     }
 
-    @CacheEvict(value = "users",allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public Result update(UpdateUserRequest updateUserRequest) {
         Optional<User> result = userRepository.findById(updateUserRequest.getId());
@@ -82,7 +79,7 @@ public class UserManager implements UserService {
         return new ErrorResult("User not found.");
     }
 
-    @CacheEvict(value = "users",allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public Result delete(DeleteUserRequest deleteUserRequest) {
         Optional<User> result = userRepository.findById(deleteUserRequest.getId());

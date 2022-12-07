@@ -1,4 +1,4 @@
-package com.ecommerce.business.requests.user;
+package com.ecommerce.business.requests.auth;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddUserRequest {
+public class RegisterRequest {
 
     @NotNull(message = "First name is required.")
     @NotBlank(message = "First name is required.")
