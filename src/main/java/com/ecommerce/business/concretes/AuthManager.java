@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.business.abstracts.AuthService;
 import com.ecommerce.business.abstracts.UserService;
+import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.auth.LoginRequest;
 import com.ecommerce.business.requests.auth.RegisterRequest;
 import com.ecommerce.core.entities.User;
@@ -30,7 +31,7 @@ public class AuthManager implements AuthService {
     public DataResult<User> register(RegisterRequest registerRequest) {
         DataResult<User> result = userService.getByEmail(registerRequest.getEmail());
         if (result.isSuccess()) {
-            return new ErrorDataResult<>("Email taken.", null);
+            return new ErrorDataResult<>(Messages.EMAIL_ERR_MSG, null);
         }
         registerRequest.setPassword(HashingUtil.createPassword(registerRequest.getPassword()));
         return userService.add(registerRequest);
@@ -43,7 +44,7 @@ public class AuthManager implements AuthService {
             return new ErrorDataResult<>(result.getMessage(), null);
         }
         if (!HashingUtil.verifyPassword(loginRequest.getPassword(), result.getData().getPassword())) {
-            return new ErrorDataResult<>("Wrong password.", null);
+            return new ErrorDataResult<>(Messages.WRONG_PW_MSG, null);
         }
 
         return new SuccessDataResult<>(result.getData());
@@ -54,9 +55,9 @@ public class AuthManager implements AuthService {
 
         final String accessToken = jwtTokenUtil.createToken(user);
         if (accessToken.isEmpty() || accessToken.isBlank()) {
-            return new ErrorDataResult<>("Token error.", null);
+            return new ErrorDataResult<>(Messages.TOKEN_ERR_MSG, null);
         }
-        return new SuccessDataResult<>("Token created.", accessToken);
+        return new SuccessDataResult<>(Messages.TOKEN_MSG, accessToken);
     }
 
 }

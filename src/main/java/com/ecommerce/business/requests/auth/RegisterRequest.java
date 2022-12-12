@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.ecommerce.business.constants.Messages;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,34 +17,34 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    @NotNull(message = "First name is required.")
-    @NotBlank(message = "First name is required.")
-    @Length(min = 2, message = "First name is too short.")
+    @NotNull(message = "First name" + Messages.REQUIRED)
+    @NotBlank(message = "First name" + Messages.REQUIRED)
+    @Length(min = 2, message = "First name" + Messages.TOO_SHORT)
     private String firstName;
 
-    @NotNull(message = "Last name is required.")
-    @NotBlank(message = "Last name is required.")
-    @Length(min = 2, message = "Last name is too short.")
+    @NotNull(message = "Last name" + Messages.REQUIRED)
+    @NotBlank(message = "Last name" + Messages.REQUIRED)
+    @Length(min = 2, message = "Last name" + Messages.TOO_SHORT)
     private String lastName;
 
-    @NotNull(message = "Address is required.")
-    @NotBlank(message = "Address is required.")
-    @Length(min = 10, message = "Address is too short.")
+    @NotNull(message = "Address" + Messages.REQUIRED)
+    @NotBlank(message = "Address" + Messages.REQUIRED)
+    @Length(min = 10, message = "Address" + Messages.TOO_SHORT)
     private String address;
 
-    @NotNull(message = "Phone number is required.")
-    @NotBlank(message = "Phone number is required.")
-    @Length(min = 5, message = "Phone number is too short.")
+    @NotNull(message = "Phone number" + Messages.REQUIRED)
+    @NotBlank(message = "Phone number" + Messages.REQUIRED)
+    @Length(min = 5, message = "Phone number" + Messages.TOO_SHORT)
     private String phone;
 
-    @NotNull(message = "Email is required.")
-    @NotBlank(message = "Email is required.")
+    @NotNull(message = "Email" + Messages.REQUIRED)
+    @NotBlank(message = "Email" + Messages.REQUIRED)
     @Email(message = "Invalid email.")
     private String email;
 
-    @NotNull(message = "Password is required.")
-    @NotBlank(message = "Password is required.")
-    @Length(min = 6, message = "Password is too short.")
+    @NotNull(message = "Password" + Messages.REQUIRED)
+    @NotBlank(message = "Password" + Messages.REQUIRED)
+    @Length(min = 6, message = "Password" + Messages.TOO_SHORT)
     private String password;
 
 }

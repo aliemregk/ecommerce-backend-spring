@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.business.abstracts.ProductService;
+import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.product.AddProductRequest;
 import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
@@ -28,6 +29,7 @@ import com.ecommerce.entities.concretes.Product;
 @Service
 public class ProductManager implements ProductService {
 
+    private static final String MESSAGE = "Product";
     private final ProductRepository productRepository;
 
     @Autowired
@@ -38,7 +40,7 @@ public class ProductManager implements ProductService {
     @Cacheable(value = "products")
     @Override
     public DataResult<List<GetAllProductResponse>> getAll() {
-        return new SuccessDataResult<>(
+        return new SuccessDataResult<>(Messages.LISTED,
                 MapperUtil.mapAll(productRepository.findAll(Sort.by(Sort.Direction.ASC, "id")),
                         GetAllProductResponse.class));
     }
@@ -48,16 +50,17 @@ public class ProductManager implements ProductService {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isPresent()) {
-            return new SuccessDataResult<>(MapperUtil.map(product.get(), GetByIdProductResponse.class));
+            return new SuccessDataResult<>(Messages.LISTED,
+                    MapperUtil.map(product.get(), GetByIdProductResponse.class));
         }
-        return new ErrorDataResult<>("Not found", null);
+        return new ErrorDataResult<>(MESSAGE + Messages.NOT_FOUND, null);
     }
 
     @CacheEvict(value = "products", allEntries = true)
     @Override
     public Result add(AddProductRequest addProductRequest) {
         productRepository.save(MapperUtil.map(addProductRequest, Product.class));
-        return new SuccessResult("Added.");
+        return new SuccessResult(MESSAGE + Messages.ADDED);
     }
 
     @CacheEvict(value = "products", allEntries = true)
@@ -67,9 +70,9 @@ public class ProductManager implements ProductService {
 
         if (productToUpdate.isPresent()) {
             productRepository.save(MapperUtil.map(updateProductRequest, Product.class));
-            return new SuccessResult("Updated.");
+            return new SuccessResult(MESSAGE + Messages.UPDATED);
         }
-        return new ErrorResult("Product not found.");
+        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
     }
 
     @CacheEvict(value = "products", allEntries = true)
@@ -79,9 +82,9 @@ public class ProductManager implements ProductService {
 
         if (productToDelete.isPresent()) {
             productRepository.delete(productToDelete.get());
-            return new SuccessResult("Deleted.");
+            return new SuccessResult(MESSAGE + Messages.DELETED);
         }
-        return new ErrorResult("Product not found.");
+        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
     }
 
 }

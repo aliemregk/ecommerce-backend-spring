@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.ecommerce.business.constants.Messages;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,25 +16,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddProductRequest {
-    @NotNull(message = "Name is required.")
-    @NotBlank(message = "Name is required.")
-    @Size(min = 2, message = "Name is too short.")
-    @Size(max = 50, message = "Name is too long.")
+    @NotNull(message = "Name" + Messages.REQUIRED)
+    @NotBlank(message = "Name" + Messages.REQUIRED)
+    @Size(min = 2, message = "Name" + Messages.TOO_SHORT)
+    @Size(max = 50, message = "Name" + Messages.TOO_LONG)
     private String name;
 
-    @NotNull(message = "Description is required.")
-    @NotBlank(message = "Description is required.")
+    @NotNull(message = "Description" + Messages.REQUIRED)
+    @NotBlank(message = "Description" + Messages.REQUIRED)
     private String description;
 
-    @NotNull(message = "Stock quantity is required.")
-    @Min(value = 0, message = "Stock quantity can not be less than zero.")
+    @NotNull(message = "Stock quantity" + Messages.REQUIRED)
+    @Min(value = 0, message = "Stock quantity" + Messages.MIN + "0")
     private int stock;
 
-    @NotNull(message = "Unit price is required.")
-    @Min(value = 1, message = "Unit price must at least 1.")
+    @NotNull(message = "Unit price" + Messages.REQUIRED)
+    @Min(value = 1, message = "Unit price" + Messages.MIN + "1")
     private double unitPrice;
 
-    @Max(value = 99, message = "Discount rate must between 0 and 99.")
-    @Min(value = 0, message = "Discount rate must between 0 and 99.")
+    @Max(value = 99, message = "Discount rate" + Messages.MAX + "99")
+    @Min(value = 0, message = "Discount rate" + Messages.MIN + "0")
     private int discount;
 }
