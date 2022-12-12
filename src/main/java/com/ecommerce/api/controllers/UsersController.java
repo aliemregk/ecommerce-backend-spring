@@ -2,6 +2,7 @@ package com.ecommerce.api.controllers;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class UsersController {
         this.userService = userService;
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @GetMapping(path = "/getall")
     public ResponseEntity<DataResult<List<GetAllUserResponse>>> getAll() {
         return ResultChecker.checkResult(userService.getAll());
@@ -46,11 +48,13 @@ public class UsersController {
         return ResultChecker.checkResult(userService.getById(id));
     }
 
+    @RolesAllowed("ROLE_USER")
     @PutMapping(path = "/update")
     public ResponseEntity<Result> update(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
         return ResultChecker.checkResult(userService.update(updateUserRequest));
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping(path = "/delete")
     public ResponseEntity<Result> delete(@RequestBody @Valid DeleteUserRequest deleteUserRequest) {
         return ResultChecker.checkResult(userService.delete(deleteUserRequest));

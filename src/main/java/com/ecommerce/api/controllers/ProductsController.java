@@ -2,6 +2,7 @@ package com.ecommerce.api.controllers;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,16 +49,19 @@ public class ProductsController {
         return ResultChecker.checkResult(productService.getProductById(id));
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @PostMapping(path = "/add")
     public ResponseEntity<Result> add(@RequestBody @Valid AddProductRequest addProductRequest) {
         return ResultChecker.checkResult(productService.add(addProductRequest));
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @PutMapping(path = "/update")
     public ResponseEntity<Result> update(@RequestBody @Valid UpdateProductRequest updateProductRequest) {
         return ResultChecker.checkResult(productService.update(updateProductRequest));
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping(path = "/delete")
     public ResponseEntity<Result> delete(@RequestBody @Valid DeleteProductRequest deleteProductRequest) {
         return ResultChecker.checkResult(productService.delete(deleteProductRequest));
