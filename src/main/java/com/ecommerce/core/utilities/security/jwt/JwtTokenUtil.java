@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JwtTokenUtil implements JwtTokenHelper {
 
-    private static final long EXPIRY = 5 * 60 * 1000;
+    private static final long EXPIRY = 15 * 60 * 1000;
 
     @Value("${jwt_secret}")
     private String secret;
@@ -56,10 +56,6 @@ public class JwtTokenUtil implements JwtTokenHelper {
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
-    }
-
-    public Date getIssuedAtDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getIssuedAt);
     }
 
     public Date getExpirationDateFromToken(String token) {

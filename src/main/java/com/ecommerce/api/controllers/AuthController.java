@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,15 +26,19 @@ import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
 public class AuthController {
 
     private final AuthService authService;
+    private final AuthenticationManager authManager;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, AuthenticationManager authManager) {
         this.authService = authService;
+        this.authManager = authManager;
     }
 
     @PostMapping(path = "/login")
     public ResponseEntity<DataResult<String>> login(@RequestBody @Valid LoginRequest loginRequest) {
-        DataResult<User> result = authService.login(loginRequest);
+        authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        final DataResult<User> result = authService.login(loginRequest);
         if (!result.isSuccess()) {
             return ResponseEntity.badRequest().body(new ErrorDataResult<>(result.getMessage(), null));
         }
@@ -41,10 +47,13 @@ public class AuthController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<DataResult<String>> register(@RequestBody @Valid RegisterRequest registerRequest) {
-        DataResult<User> result = authService.register(registerRequest);
+        final String pw = registerRequest.getPassword();
+        final DataResult<User> result = authService.register(registerRequest);
         if (!result.isSuccess()) {
             return ResponseEntity.badRequest().body(new ErrorDataResult<>(result.getMessage(), null));
         }
+        authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), pw));
         return ResultChecker.checkResult(authService.createToken(result.getData()));
     }
 
