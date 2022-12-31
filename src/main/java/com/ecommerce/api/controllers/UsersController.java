@@ -6,7 +6,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,6 @@ import com.ecommerce.business.requests.user.UpdateUserRequest;
 import com.ecommerce.business.responses.user.GetAllUserResponse;
 import com.ecommerce.business.responses.user.GetByIdUserResponse;
 import com.ecommerce.core.utilities.results.Result;
-import com.ecommerce.core.utilities.results.ResultChecker;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
 @RestController
@@ -39,25 +37,25 @@ public class UsersController {
 
     @RolesAllowed("ROLE_ADMIN")
     @GetMapping(path = "/getall")
-    public ResponseEntity<DataResult<List<GetAllUserResponse>>> getAll() {
-        return ResultChecker.checkResult(userService.getAll());
+    public DataResult<List<GetAllUserResponse>> getAll() {
+        return userService.getAll();
     }
 
     @GetMapping(path = "/getbyid")
-    public ResponseEntity<DataResult<GetByIdUserResponse>> getById(@RequestParam int id) {
-        return ResultChecker.checkResult(userService.getById(id));
+    public DataResult<GetByIdUserResponse> getById(@RequestParam int id) {
+        return userService.getById(id);
     }
 
     @RolesAllowed("ROLE_USER")
     @PutMapping(path = "/update")
-    public ResponseEntity<Result> update(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
-        return ResultChecker.checkResult(userService.update(updateUserRequest));
+    public Result update(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
+        return userService.update(updateUserRequest);
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping(path = "/delete")
-    public ResponseEntity<Result> delete(@RequestBody @Valid DeleteUserRequest deleteUserRequest) {
-        return ResultChecker.checkResult(userService.delete(deleteUserRequest));
+    public Result delete(@RequestBody @Valid DeleteUserRequest deleteUserRequest) {
+        return userService.delete(deleteUserRequest);
     }
 
 }

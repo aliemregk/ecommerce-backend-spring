@@ -23,32 +23,22 @@ import lombok.NoArgsConstructor;
 public class Product {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name", nullable = false)
-    @NotNull(message = "Name is required.")
-    @NotBlank(message = "Name is required.")
     private String name;
 
     @Column(name = "description", nullable = false)
-    @NotNull(message = "Description is required.")
-    @NotBlank(message = "Description is required.")
     private String description;
 
     @Column(name = "stock", nullable = false)
-    @NotNull(message = "Stock quantity is required.")
-    @Min(value = 0)
     private int stock;
 
     @Column(name = "unitPrice", nullable = false)
-    @NotNull(message = "Unit price is required.")
-    @Min(value = 0)
     private double unitPrice;
 
     @Column(name = "discount")
-    @Max(value = 99)
-    @Min(value = 0)
     private int discount;
 }

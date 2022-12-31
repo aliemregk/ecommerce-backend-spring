@@ -6,7 +6,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +23,6 @@ import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.results.Result;
-import com.ecommerce.core.utilities.results.ResultChecker;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
 @RestController
@@ -40,31 +38,31 @@ public class ProductsController {
     }
 
     @GetMapping(path = "/getall")
-    public ResponseEntity<DataResult<List<GetAllProductResponse>>> getAll() {
-        return ResultChecker.checkResult(productService.getAll());
+    public DataResult<List<GetAllProductResponse>> getAll() {
+        return productService.getAll();
     }
 
     @GetMapping(path = "/getbyid")
-    public ResponseEntity<DataResult<GetByIdProductResponse>> getById(@RequestParam int id) {
-        return ResultChecker.checkResult(productService.getProductById(id));
+    public DataResult<GetByIdProductResponse> getById(@RequestParam int id) {
+        return productService.getProductById(id);
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @PostMapping(path = "/add")
-    public ResponseEntity<Result> add(@RequestBody @Valid AddProductRequest addProductRequest) {
-        return ResultChecker.checkResult(productService.add(addProductRequest));
+    public Result add(@RequestBody @Valid AddProductRequest addProductRequest) {
+        return productService.add(addProductRequest);
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @PutMapping(path = "/update")
-    public ResponseEntity<Result> update(@RequestBody @Valid UpdateProductRequest updateProductRequest) {
-        return ResultChecker.checkResult(productService.update(updateProductRequest));
+    public Result update(@RequestBody @Valid UpdateProductRequest updateProductRequest) {
+        return productService.update(updateProductRequest);
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping(path = "/delete")
-    public ResponseEntity<Result> delete(@RequestBody @Valid DeleteProductRequest deleteProductRequest) {
-        return ResultChecker.checkResult(productService.delete(deleteProductRequest));
+    public Result delete(@RequestBody @Valid DeleteProductRequest deleteProductRequest) {
+        return productService.delete(deleteProductRequest);
     }
 
 }
