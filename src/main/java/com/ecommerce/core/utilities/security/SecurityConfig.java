@@ -27,7 +27,8 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST = {
             "/api/auth/register",
             "/api/auth/login",
-            "/api/products/get*" };
+            "/api/products/get*",
+            "/api/categories/getall" };
 
     // .antMatchers(HttpMethod.GET, "/api/author/**").permitAll()
     // .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
