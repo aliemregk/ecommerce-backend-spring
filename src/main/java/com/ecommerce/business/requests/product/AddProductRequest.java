@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.ecommerce.business.constants.Messages;
+import com.ecommerce.entities.concretes.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,4 +38,7 @@ public class AddProductRequest {
     @Max(value = 99, message = "Discount rate" + Messages.MAX + "99")
     @Min(value = 0, message = "Discount rate" + Messages.MIN + "0")
     private int discount;
+
+    @NotNull(message = "Category " + Messages.REQUIRED)
+    private Category category;
 }

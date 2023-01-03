@@ -45,11 +45,11 @@ public class AuthController {
 
     @PostMapping(path = "/register")
     public DataResult<String> register(@RequestBody @Valid RegisterRequest registerRequest) {
-        final String pw = registerRequest.getPassword();
         final DataResult<User> result = authService.register(registerRequest);
         if (!result.isSuccess()) {
             return new ErrorDataResult<>(result.getMessage(), null);
         }
+        final String pw = registerRequest.getPassword();
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), pw));
         return authService.createToken(result.getData());
