@@ -14,6 +14,7 @@ import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.product.AddProductRequest;
 import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
+import com.ecommerce.business.responses.product.GetAllByCategoryIdProductResponse;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
@@ -46,7 +47,7 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public DataResult<GetByIdProductResponse> getProductById(int id) {
+    public DataResult<GetByIdProductResponse> getById(int id) {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isPresent()) {
@@ -54,6 +55,13 @@ public class ProductManager implements ProductService {
                     MapperUtil.map(product.get(), GetByIdProductResponse.class));
         }
         return new ErrorDataResult<>(MESSAGE + Messages.NOT_FOUND, null);
+    }
+
+    @Cacheable(value = "products")
+    @Override
+    public DataResult<List<GetAllByCategoryIdProductResponse>> getAllByCategoryId(int id) {
+        return new SuccessDataResult<>(Messages.LISTED,
+                MapperUtil.mapAll(productRepository.getAllByCategoryId(id), GetAllByCategoryIdProductResponse.class));
     }
 
     @CacheEvict(value = "products", allEntries = true)

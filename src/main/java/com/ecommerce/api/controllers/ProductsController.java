@@ -20,6 +20,7 @@ import com.ecommerce.business.abstracts.ProductService;
 import com.ecommerce.business.requests.product.AddProductRequest;
 import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
+import com.ecommerce.business.responses.product.GetAllByCategoryIdProductResponse;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.results.Result;
@@ -44,7 +45,12 @@ public class ProductsController {
 
     @GetMapping(path = "/getbyid")
     public DataResult<GetByIdProductResponse> getById(@RequestParam int id) {
-        return productService.getProductById(id);
+        return productService.getById(id);
+    }
+
+    @GetMapping(path = "/getallbycategoryid")
+    public DataResult<List<GetAllByCategoryIdProductResponse>> getAllByCategoryId(@RequestParam int id) {
+        return productService.getAllByCategoryId(id);
     }
 
     @RolesAllowed("ROLE_ADMIN")

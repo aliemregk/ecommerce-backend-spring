@@ -5,6 +5,7 @@ import java.util.List;
 import com.ecommerce.business.requests.product.AddProductRequest;
 import com.ecommerce.business.requests.product.DeleteProductRequest;
 import com.ecommerce.business.requests.product.UpdateProductRequest;
+import com.ecommerce.business.responses.product.GetAllByCategoryIdProductResponse;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.results.Result;
@@ -14,7 +15,9 @@ public interface ProductService {
 
     DataResult<List<GetAllProductResponse>> getAll();
 
-    DataResult<GetByIdProductResponse> getProductById(int id);
+    DataResult<GetByIdProductResponse> getById(int id);
+
+    DataResult<List<GetAllByCategoryIdProductResponse>> getAllByCategoryId(int id);
 
     Result add(AddProductRequest addProductRequest);
 
