@@ -15,5 +15,4 @@ public class GetAllByUserIdOrderResponse {
     private boolean isDelivered;
     private Date deliveryDate;
     private double totalPrice;
-
 }
