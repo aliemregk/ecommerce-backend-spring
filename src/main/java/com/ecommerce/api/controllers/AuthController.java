@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ecommerce.business.abstracts.AuthService;
 import com.ecommerce.business.requests.auth.LoginRequest;
 import com.ecommerce.business.requests.auth.RegisterRequest;
+import com.ecommerce.business.responses.auth.AuthResponse;
 import com.ecommerce.core.entities.User;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
@@ -33,9 +34,9 @@ public class AuthController {
     }
 
     @PostMapping(path = "/login")
-    public DataResult<String> login(@RequestBody @Valid LoginRequest loginRequest) {
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+    public DataResult<AuthResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
+
+        authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         final DataResult<User> result = authService.login(loginRequest);
         if (!result.isSuccess()) {
             return new ErrorDataResult<>(result.getMessage(), null);
@@ -44,15 +45,17 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register")
-    public DataResult<String> register(@RequestBody @Valid RegisterRequest registerRequest) {
+    public DataResult<AuthResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
         final DataResult<User> result = authService.register(registerRequest);
         if (!result.isSuccess()) {
             return new ErrorDataResult<>(result.getMessage(), null);
         }
-        final String pw = registerRequest.getPassword();
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), pw));
+        authenticate(registerRequest.getEmail(), registerRequest.getPassword());
         return authService.createToken(result.getData());
+    }
+
+    private void authenticate(String email, String password) {
+        authManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
     }
 
 }

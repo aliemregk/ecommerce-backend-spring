@@ -8,7 +8,10 @@ import com.ecommerce.business.abstracts.UserService;
 import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.auth.LoginRequest;
 import com.ecommerce.business.requests.auth.RegisterRequest;
+import com.ecommerce.business.responses.auth.AuthResponse;
+import com.ecommerce.business.responses.user.GetAllUserResponse;
 import com.ecommerce.core.entities.User;
+import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
 import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
@@ -51,13 +54,14 @@ public class AuthManager implements AuthService {
     }
 
     @Override
-    public DataResult<String> createToken(User user) {
+    public DataResult<AuthResponse> createToken(User user) {
 
         final String accessToken = jwtTokenUtil.createToken(user);
         if (accessToken.isEmpty() || accessToken.isBlank()) {
             return new ErrorDataResult<>(Messages.TOKEN_ERR_MSG, null);
         }
-        return new SuccessDataResult<>(Messages.TOKEN_MSG, accessToken);
+        return new SuccessDataResult<>(Messages.TOKEN_MSG,
+                new AuthResponse(accessToken, MapperUtil.map(user, GetAllUserResponse.class)));
     }
 
 }
