@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +28,15 @@ import com.ecommerce.dataaccess.abstracts.OrderRepository;
 import com.ecommerce.entities.concretes.Order;
 import com.ecommerce.entities.concretes.Product;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class OrderManager implements OrderService {
 
     private static final String MESSAGE = "Order";
     private final OrderRepository orderRepository;
     private final OrderDetailService detailService;
-
-    @Autowired
-    public OrderManager(OrderRepository orderRepository, OrderDetailService detailService) {
-        this.orderRepository = orderRepository;
-        this.detailService = detailService;
-    }
 
     @Override
     public DataResult<List<GetAllOrderResponse>> getAll() {

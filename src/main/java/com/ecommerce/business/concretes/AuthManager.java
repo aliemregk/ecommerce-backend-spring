@@ -1,6 +1,5 @@
 package com.ecommerce.business.concretes;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.business.abstracts.AuthService;
@@ -18,17 +17,14 @@ import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 import com.ecommerce.core.utilities.security.hashing.HashingUtil;
 import com.ecommerce.core.utilities.security.jwt.JwtTokenUtil;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class AuthManager implements AuthService {
 
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    public AuthManager(UserService userService, JwtTokenUtil jwtTokenUtil) {
-        this.userService = userService;
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
 
     @Override
     public DataResult<User> register(RegisterRequest registerRequest) {

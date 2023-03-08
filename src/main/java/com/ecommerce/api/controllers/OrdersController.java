@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +25,15 @@ import com.ecommerce.business.responses.order.GetByIdOrderResponse;
 import com.ecommerce.core.utilities.results.Result;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin
+@AllArgsConstructor
 public class OrdersController {
 
     private final OrderService orderService;
-
-    @Autowired
-    public OrdersController(OrderService orderService) {
-        this.orderService = orderService;
-    }
 
     @RolesAllowed("ROLE_ADMIN")
     @GetMapping(path = "/getall")

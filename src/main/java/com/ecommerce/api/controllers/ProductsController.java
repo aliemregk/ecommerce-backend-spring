@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +25,15 @@ import com.ecommerce.business.responses.product.GetByIdProductResponse;
 import com.ecommerce.core.utilities.results.Result;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin
+@AllArgsConstructor
 public class ProductsController {
 
     private final ProductService productService;
-
-    @Autowired
-    public ProductsController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping(path = "/getall")
     public DataResult<List<GetAllProductResponse>> getAll() {

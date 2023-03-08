@@ -2,7 +2,6 @@ package com.ecommerce.api.controllers;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,38 +18,35 @@ import com.ecommerce.core.entities.User;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin
+@AllArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
     private final AuthenticationManager authManager;
 
-    @Autowired
-    public AuthController(AuthService authService, AuthenticationManager authManager) {
-        this.authService = authService;
-        this.authManager = authManager;
-    }
-
     @PostMapping(path = "/login")
     public DataResult<AuthResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
-
-        authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         final DataResult<User> result = authService.login(loginRequest);
         if (!result.isSuccess()) {
             return new ErrorDataResult<>(result.getMessage(), null);
         }
+        authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         return authService.createToken(result.getData());
     }
 
     @PostMapping(path = "/register")
     public DataResult<AuthResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
+        final String pw = registerRequest.getPassword();
         final DataResult<User> result = authService.register(registerRequest);
         if (!result.isSuccess()) {
             return new ErrorDataResult<>(result.getMessage(), null);
         }
-        authenticate(registerRequest.getEmail(), registerRequest.getPassword());
+        authenticate(registerRequest.getEmail(), pw);
         return authService.createToken(result.getData());
     }
 

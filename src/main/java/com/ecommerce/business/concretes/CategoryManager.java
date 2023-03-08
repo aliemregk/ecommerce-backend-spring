@@ -3,7 +3,6 @@ package com.ecommerce.business.concretes;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +23,14 @@ import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 import com.ecommerce.dataaccess.abstracts.CategoryRepository;
 import com.ecommerce.entities.concretes.Category;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class CategoryManager implements CategoryService {
 
     private static final String MESSAGE = "Category";
     private final CategoryRepository categoryRepository;
-
-    @Autowired
-    public CategoryManager(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     public DataResult<List<GetAllCategoryResponse>> getAll() {

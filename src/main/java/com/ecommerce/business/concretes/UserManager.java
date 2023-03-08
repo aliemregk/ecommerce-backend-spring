@@ -3,7 +3,6 @@ package com.ecommerce.business.concretes;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
@@ -26,16 +25,14 @@ import com.ecommerce.core.utilities.results.dataresults.DataResult;
 import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
 import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class UserManager implements UserService {
 
     private static final String MESSAGE = "User";
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserManager(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Cacheable(value = "users")
     @Override

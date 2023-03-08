@@ -3,7 +3,6 @@ package com.ecommerce.business.concretes;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
@@ -27,16 +26,14 @@ import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 import com.ecommerce.dataaccess.abstracts.ProductRepository;
 import com.ecommerce.entities.concretes.Product;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class ProductManager implements ProductService {
 
     private static final String MESSAGE = "Product";
     private final ProductRepository productRepository;
-
-    @Autowired
-    public ProductManager(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
     @Cacheable(value = "products")
     @Override

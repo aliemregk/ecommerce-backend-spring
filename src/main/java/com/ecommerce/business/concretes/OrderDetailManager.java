@@ -3,7 +3,6 @@ package com.ecommerce.business.concretes;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +24,14 @@ import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 import com.ecommerce.dataaccess.abstracts.OrderDetailRepository;
 import com.ecommerce.entities.concretes.OrderDetail;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class OrderDetailManager implements OrderDetailService {
 
     private static final String MESSAGE = "Order detail";
     private final OrderDetailRepository orderDetailRepository;
-
-    @Autowired
-    public OrderDetailManager(OrderDetailRepository orderDetailRepository) {
-        this.orderDetailRepository = orderDetailRepository;
-    }
 
     @Override
     public DataResult<List<GetAllOrderDetailResponse>> getAll() {
