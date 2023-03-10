@@ -1,8 +1,7 @@
 package com.ecommerce.business.responses.orderdetail;
 
-import com.ecommerce.entities.concretes.Order;
-import com.ecommerce.entities.concretes.Product;
-
+import com.ecommerce.business.responses.order.OrderDetailOrderResponse;
+import com.ecommerce.business.responses.product.OrderDetailProductResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetAllOrderDetailResponse {
     private int id;
-    private Product product;
-    private Order order;
+    private OrderDetailProductResponse product;
+    private OrderDetailOrderResponse order;
     private int quantity;
 }

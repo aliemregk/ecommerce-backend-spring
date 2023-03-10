@@ -8,7 +8,7 @@ import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.auth.LoginRequest;
 import com.ecommerce.business.requests.auth.RegisterRequest;
 import com.ecommerce.business.responses.auth.AuthResponse;
-import com.ecommerce.business.responses.user.GetAllUserResponse;
+import com.ecommerce.business.responses.user.AuthUserResponse;
 import com.ecommerce.core.entities.User;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
@@ -57,7 +57,7 @@ public class AuthManager implements AuthService {
             return new ErrorDataResult<>(Messages.TOKEN_ERR_MSG, null);
         }
         return new SuccessDataResult<>(Messages.TOKEN_MSG,
-                new AuthResponse(accessToken, MapperUtil.map(user, GetAllUserResponse.class)));
+                new AuthResponse(accessToken, MapperUtil.map(user, AuthUserResponse.class)));
     }
 
 }

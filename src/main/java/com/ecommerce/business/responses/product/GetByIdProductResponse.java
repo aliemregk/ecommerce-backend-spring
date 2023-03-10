@@ -1,6 +1,6 @@
 package com.ecommerce.business.responses.product;
 
-import com.ecommerce.entities.concretes.Category;
+import com.ecommerce.business.responses.category.ProductCategoryResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +15,5 @@ public class GetByIdProductResponse {
     private int stock;
     private double unitPrice;
     private int discount;
-    private Category category;
+    private ProductCategoryResponse category;
 }

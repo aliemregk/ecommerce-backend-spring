@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetByIdOrderResponse {
+public class OrderDetailOrderResponse {
+    private int id;
     private Date orderDate;
     private boolean isDelivered;
     private Date deliveryDate;
