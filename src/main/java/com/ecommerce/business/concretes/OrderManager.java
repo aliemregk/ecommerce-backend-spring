@@ -2,8 +2,6 @@ package com.ecommerce.business.concretes;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +15,12 @@ import com.ecommerce.business.requests.orderdetail.AddOrderDetailRequest;
 import com.ecommerce.business.responses.order.GetAllByUserIdOrderResponse;
 import com.ecommerce.business.responses.order.GetAllOrderResponse;
 import com.ecommerce.business.responses.order.GetByIdOrderResponse;
+import com.ecommerce.business.rules.OrderBusinessRules;
+import com.ecommerce.core.exceptions.BusinessException;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
-import com.ecommerce.core.utilities.results.ErrorResult;
 import com.ecommerce.core.utilities.results.Result;
 import com.ecommerce.core.utilities.results.SuccessResult;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
-import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
 import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 import com.ecommerce.dataaccess.abstracts.OrderRepository;
 import com.ecommerce.entities.concretes.Order;
@@ -37,6 +35,7 @@ public class OrderManager implements OrderService {
     private static final String MESSAGE = "Order";
     private final OrderRepository orderRepository;
     private final OrderDetailService detailService;
+    private final OrderBusinessRules orderBusinessRules;
 
     @Override
     public DataResult<List<GetAllOrderResponse>> getAll() {
@@ -46,51 +45,44 @@ public class OrderManager implements OrderService {
     }
 
     @Override
-    public DataResult<List<GetAllByUserIdOrderResponse>> getAllByUserId(int id) {
+    public DataResult<List<GetAllByUserIdOrderResponse>> getAllByUserId(int userId) {
+        orderBusinessRules.checkIfUserExists(userId);
         return new SuccessDataResult<>(Messages.LISTED,
-                MapperUtil.mapAll(orderRepository.getAllByUserId(id), GetAllByUserIdOrderResponse.class));
+                MapperUtil.mapAll(orderRepository.getAllByUserId(userId), GetAllByUserIdOrderResponse.class));
     }
 
     @Override
     public DataResult<GetByIdOrderResponse> getById(int id) {
-        Optional<Order> result = orderRepository.findById(id);
-        if (result.isPresent()) {
-            return new SuccessDataResult<>(Messages.LISTED, MapperUtil.map(result.get(), GetByIdOrderResponse.class));
-        }
-        return new ErrorDataResult<>(MESSAGE + Messages.NOT_FOUND, null);
+        Order result = orderRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("No order found with given ID."));
+        return new SuccessDataResult<>(Messages.LISTED, MapperUtil.map(result, GetByIdOrderResponse.class));
     }
 
     @Override
-    public Result add(AddOrderRequest order) {
-        final Order newOrder = orderRepository.save(MapperUtil.map(order, Order.class));
-
-        // TODO Refactor
-        for (Map.Entry<Integer, Integer> entry : order.getOrderProducts().entrySet()) {
+    public Result add(AddOrderRequest addOrderRequest) {
+        orderBusinessRules.checkIfUserExists(addOrderRequest.getUser().getId());
+        final Order newOrder = orderRepository.save(MapperUtil.map(addOrderRequest, Order.class));
+        
+        for (Map.Entry<Integer, Integer> entry : addOrderRequest.getOrderProducts().entrySet()) {
             detailService.add(new AddOrderDetailRequest(new Product(entry.getKey()),
                     newOrder, entry.getValue()));
         }
-
         return new SuccessResult(MESSAGE + Messages.ADDED);
     }
 
     @Override
-    public Result update(UpdateOrderRequest order) {
-        Optional<Order> result = orderRepository.findById(order.getId());
-        if (result.isPresent()) {
-            orderRepository.save(MapperUtil.map(order, Order.class));
-            return new SuccessResult(MESSAGE + Messages.UPDATED);
-        }
-        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
+    public Result update(UpdateOrderRequest updateOrderRequest) {
+        orderBusinessRules.checkIfOrderExists(updateOrderRequest.getId());
+        orderBusinessRules.checkIfUserExists(updateOrderRequest.getUser().getId());
+        orderRepository.save(MapperUtil.map(updateOrderRequest, Order.class));
+        return new SuccessResult(MESSAGE + Messages.UPDATED);
     }
 
     @Override
-    public Result delete(DeleteOrderRequest order) {
-        Optional<Order> result = orderRepository.findById(order.getId());
-        if (result.isPresent()) {
-            orderRepository.delete(MapperUtil.map(order, Order.class));
-            return new SuccessResult(MESSAGE + Messages.DELETED);
-        }
-        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
+    public Result delete(DeleteOrderRequest deleteOrderRequest) {
+        orderBusinessRules.checkIfOrderExists(deleteOrderRequest.getId());
+        orderRepository.deleteById(deleteOrderRequest.getId());
+        return new SuccessResult(MESSAGE + Messages.DELETED);
     }
 
 }

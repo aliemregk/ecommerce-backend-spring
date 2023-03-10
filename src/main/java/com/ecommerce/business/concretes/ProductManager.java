@@ -1,8 +1,6 @@
 package com.ecommerce.business.concretes;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
@@ -16,12 +14,12 @@ import com.ecommerce.business.requests.product.UpdateProductRequest;
 import com.ecommerce.business.responses.product.GetAllByCategoryIdProductResponse;
 import com.ecommerce.business.responses.product.GetAllProductResponse;
 import com.ecommerce.business.responses.product.GetByIdProductResponse;
+import com.ecommerce.business.rules.ProductBusinessRules;
+import com.ecommerce.core.exceptions.BusinessException;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
-import com.ecommerce.core.utilities.results.ErrorResult;
 import com.ecommerce.core.utilities.results.Result;
 import com.ecommerce.core.utilities.results.SuccessResult;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
-import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
 import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 import com.ecommerce.dataaccess.abstracts.ProductRepository;
 import com.ecommerce.entities.concretes.Product;
@@ -34,6 +32,7 @@ public class ProductManager implements ProductService {
 
     private static final String MESSAGE = "Product";
     private final ProductRepository productRepository;
+    private final ProductBusinessRules productBusinessRules;
 
     @Cacheable(value = "products")
     @Override
@@ -45,18 +44,16 @@ public class ProductManager implements ProductService {
 
     @Override
     public DataResult<GetByIdProductResponse> getById(int id) {
-        Optional<Product> product = productRepository.findById(id);
-
-        if (product.isPresent()) {
-            return new SuccessDataResult<>(Messages.LISTED,
-                    MapperUtil.map(product.get(), GetByIdProductResponse.class));
-        }
-        return new ErrorDataResult<>(MESSAGE + Messages.NOT_FOUND, null);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("No product found with given ID."));
+        return new SuccessDataResult<>(Messages.LISTED,
+                MapperUtil.map(product, GetByIdProductResponse.class));
     }
 
     @Cacheable(value = "products")
     @Override
     public DataResult<List<GetAllByCategoryIdProductResponse>> getAllByCategoryId(int id) {
+        productBusinessRules.checkIfProductCategoryExists(id);
         return new SuccessDataResult<>(Messages.LISTED,
                 MapperUtil.mapAll(productRepository.getAllByCategoryId(id), GetAllByCategoryIdProductResponse.class));
     }
@@ -64,6 +61,7 @@ public class ProductManager implements ProductService {
     @CacheEvict(value = "products", allEntries = true)
     @Override
     public Result add(AddProductRequest addProductRequest) {
+        productBusinessRules.checkIfProductNameExists(addProductRequest.getName());
         productRepository.save(MapperUtil.map(addProductRequest, Product.class));
         return new SuccessResult(MESSAGE + Messages.ADDED);
     }
@@ -71,25 +69,18 @@ public class ProductManager implements ProductService {
     @CacheEvict(value = "products", allEntries = true)
     @Override
     public Result update(UpdateProductRequest updateProductRequest) {
-        Optional<Product> productToUpdate = productRepository.findById(updateProductRequest.getId());
-
-        if (productToUpdate.isPresent()) {
-            productRepository.save(MapperUtil.map(updateProductRequest, Product.class));
-            return new SuccessResult(MESSAGE + Messages.UPDATED);
-        }
-        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
+        productBusinessRules.checkIfProductCategoryExists(updateProductRequest.getCategory().getId());
+        productBusinessRules.checkIfProductNameChanged(updateProductRequest.getId(), updateProductRequest.getName());
+        productRepository.save(MapperUtil.map(updateProductRequest, Product.class));
+        return new SuccessResult(MESSAGE + Messages.UPDATED);
     }
 
     @CacheEvict(value = "products", allEntries = true)
     @Override
     public Result delete(DeleteProductRequest deleteProductRequest) {
-        Optional<Product> productToDelete = productRepository.findById(deleteProductRequest.getId());
-
-        if (productToDelete.isPresent()) {
-            productRepository.delete(productToDelete.get());
-            return new SuccessResult(MESSAGE + Messages.DELETED);
-        }
-        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
+        productBusinessRules.checkIfProductExists(deleteProductRequest.getId());
+        productRepository.deleteById(deleteProductRequest.getId());
+        return new SuccessResult(MESSAGE + Messages.DELETED);
     }
 
 }

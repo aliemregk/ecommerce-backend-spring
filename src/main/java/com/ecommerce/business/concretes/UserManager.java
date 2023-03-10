@@ -15,14 +15,15 @@ import com.ecommerce.business.requests.user.DeleteUserRequest;
 import com.ecommerce.business.requests.user.UpdateUserRequest;
 import com.ecommerce.business.responses.user.GetAllUserResponse;
 import com.ecommerce.business.responses.user.GetByIdUserResponse;
+import com.ecommerce.business.rules.UserBusinessRules;
 import com.ecommerce.core.dataaccess.UserRepository;
 import com.ecommerce.core.entities.User;
+import com.ecommerce.core.exceptions.BusinessException;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.core.utilities.results.ErrorResult;
 import com.ecommerce.core.utilities.results.Result;
 import com.ecommerce.core.utilities.results.SuccessResult;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
-import com.ecommerce.core.utilities.results.dataresults.ErrorDataResult;
 import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class UserManager implements UserService {
 
     private static final String MESSAGE = "User";
     private final UserRepository userRepository;
+    private final UserBusinessRules userBusinessRules;
 
     @Cacheable(value = "users")
     @Override
@@ -43,25 +45,22 @@ public class UserManager implements UserService {
 
     @Override
     public DataResult<GetByIdUserResponse> getById(int id) {
-        Optional<User> result = userRepository.findById(id);
-        if (result.isPresent()) {
-            return new SuccessDataResult<>(Messages.LISTED, MapperUtil.map(result.get(), GetByIdUserResponse.class));
-        }
-        return new ErrorDataResult<>(MESSAGE + Messages.NOT_FOUND, null);
+        User result = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("No user found with given ID."));
+        return new SuccessDataResult<>(Messages.LISTED, MapperUtil.map(result, GetByIdUserResponse.class));
     }
 
     @Override
     public DataResult<User> getByEmail(String email) {
-        Optional<User> result = userRepository.getByEmail(email);
-        if (result.isPresent()) {
-            return new SuccessDataResult<>(Messages.LISTED, result.get());
-        }
-        return new ErrorDataResult<>(Messages.EMAIL_MSG + email, null);
+        User result = userRepository.getByEmail(email)
+                .orElseThrow(() -> new BusinessException("No user found with given email."));
+        return new SuccessDataResult<>(Messages.LISTED, result);
     }
 
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public DataResult<User> add(RegisterRequest addUserRequest) {
+        userBusinessRules.checkIfUserEmailExists(addUserRequest.getEmail());
         return new SuccessDataResult<>(MESSAGE + Messages.ADDED,
                 userRepository.save(MapperUtil.map(addUserRequest, User.class)));
     }
@@ -69,6 +68,8 @@ public class UserManager implements UserService {
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public Result update(UpdateUserRequest updateUserRequest) {
+        userBusinessRules.checkIfUserEmailChanged(updateUserRequest.getId(), updateUserRequest.getEmail());
+
         Optional<User> result = userRepository.findById(updateUserRequest.getId());
         if (result.isPresent()) {
             userRepository.save(MapperUtil.map(updateUserRequest, User.class));
