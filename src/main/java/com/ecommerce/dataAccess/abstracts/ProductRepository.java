@@ -9,4 +9,6 @@ import com.ecommerce.entities.concretes.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> getAllByCategoryId(int id);
+
+    boolean existsByName(String productName);
 }

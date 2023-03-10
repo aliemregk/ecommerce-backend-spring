@@ -6,4 +6,5 @@ import com.ecommerce.entities.concretes.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
+    boolean existsByName(String categoryName);
 }
