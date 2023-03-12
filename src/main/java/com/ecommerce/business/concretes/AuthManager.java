@@ -16,7 +16,7 @@ import com.ecommerce.core.exceptions.BusinessException;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
-import com.ecommerce.core.utilities.security.hashing.HashingUtil;
+import com.ecommerce.core.utilities.security.hashing.HashingService;
 import com.ecommerce.core.utilities.security.jwt.JwtTokenUtil;
 
 import lombok.AllArgsConstructor;
@@ -28,12 +28,13 @@ public class AuthManager implements AuthService {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserRepository userRepository;
     private final AuthBusinessRules authBusinessRules;
+    private final HashingService hashingService;
 
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public User register(RegisterRequest registerRequest) {
         authBusinessRules.checkIfUserEmailExists(registerRequest.getEmail());
-        registerRequest.setPassword(HashingUtil.createPassword(registerRequest.getPassword()));
+        registerRequest.setPassword(hashingService.createPassword(registerRequest.getPassword()));
         return userRepository.save(MapperUtil.map(registerRequest, User.class));
     }
 
