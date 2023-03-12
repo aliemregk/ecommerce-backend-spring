@@ -1,8 +1,6 @@
 package com.ecommerce.business.concretes;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
@@ -19,7 +17,6 @@ import com.ecommerce.core.dataaccess.UserRepository;
 import com.ecommerce.core.entities.User;
 import com.ecommerce.core.exceptions.BusinessException;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
-import com.ecommerce.core.utilities.results.ErrorResult;
 import com.ecommerce.core.utilities.results.Result;
 import com.ecommerce.core.utilities.results.SuccessResult;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
@@ -53,24 +50,16 @@ public class UserManager implements UserService {
     @Override
     public Result update(UpdateUserRequest updateUserRequest) {
         userBusinessRules.checkIfUserEmailChanged(updateUserRequest.getId(), updateUserRequest.getEmail());
-
-        Optional<User> result = userRepository.findById(updateUserRequest.getId());
-        if (result.isPresent()) {
-            userRepository.save(MapperUtil.map(updateUserRequest, User.class));
-            return new SuccessResult(MESSAGE + Messages.UPDATED);
-        }
-        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
+        userRepository.save(MapperUtil.map(updateUserRequest, User.class));
+        return new SuccessResult(MESSAGE + Messages.UPDATED);
     }
 
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public Result delete(DeleteUserRequest deleteUserRequest) {
-        Optional<User> result = userRepository.findById(deleteUserRequest.getId());
-        if (result.isPresent()) {
-            userRepository.delete(result.get());
-            return new SuccessResult(MESSAGE + Messages.DELETED);
-        }
-        return new ErrorResult(MESSAGE + Messages.NOT_FOUND);
+        userBusinessRules.checkIfUserExists(deleteUserRequest.getId());
+        userRepository.deleteById(deleteUserRequest.getId());
+        return new SuccessResult(MESSAGE + Messages.DELETED);
     }
 
 }

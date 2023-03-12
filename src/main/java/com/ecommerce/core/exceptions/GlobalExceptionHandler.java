@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
     public ValidationProblemDetails handleValidationException(
             MethodArgumentNotValidException argumentNotValidException) {
         ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
+        validationProblemDetails.setMessage("Validation Error");
         validationProblemDetails.setValidationErrors(new HashMap<>());
 
         for (FieldError fieldError : argumentNotValidException.getBindingResult().getFieldErrors()) {

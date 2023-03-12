@@ -28,7 +28,7 @@ public class UserBusinessRules {
 
     public void checkIfUserEmailChanged(int userId, String email) {
         User result = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException("No user found with given email."));
+                .orElseThrow(() -> new BusinessException("No user found with given ID."));
         if (!result.getEmail().equals(email)) {
             checkIfUserEmailExists(email);
         }
