@@ -8,10 +8,10 @@ import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
 public interface AuthService {
 
-    DataResult<User> register(RegisterRequest registerRequest);
+    User register(RegisterRequest registerRequest);
 
-    DataResult<User> login(LoginRequest loginRequest);
+    User login(LoginRequest loginRequest);
 
-    DataResult<AuthResponse> createToken(User user);
+    DataResult<AuthResponse> createAuthResponse(User user);
 
 }

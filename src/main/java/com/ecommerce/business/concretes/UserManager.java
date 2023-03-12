@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.business.abstracts.UserService;
 import com.ecommerce.business.constants.Messages;
-import com.ecommerce.business.requests.auth.RegisterRequest;
 import com.ecommerce.business.requests.user.DeleteUserRequest;
 import com.ecommerce.business.requests.user.UpdateUserRequest;
 import com.ecommerce.business.responses.user.GetAllUserResponse;
@@ -48,21 +47,6 @@ public class UserManager implements UserService {
         User result = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("No user found with given ID."));
         return new SuccessDataResult<>(Messages.LISTED, MapperUtil.map(result, GetByIdUserResponse.class));
-    }
-
-    @Override
-    public DataResult<User> getByEmail(String email) {
-        User result = userRepository.getByEmail(email)
-                .orElseThrow(() -> new BusinessException("No user found with given email."));
-        return new SuccessDataResult<>(Messages.LISTED, result);
-    }
-
-    @CacheEvict(value = "users", allEntries = true)
-    @Override
-    public DataResult<User> add(RegisterRequest addUserRequest) {
-        userBusinessRules.checkIfUserEmailExists(addUserRequest.getEmail());
-        return new SuccessDataResult<>(MESSAGE + Messages.ADDED,
-                userRepository.save(MapperUtil.map(addUserRequest, User.class)));
     }
 
     @CacheEvict(value = "users", allEntries = true)
