@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.ecommerce.core.entities.User;
+import com.ecommerce.entities.enums.OrderStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -37,8 +38,8 @@ public class Order {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date orderDate;
 
-    @Column(name = "isDelivered", nullable = false)
-    private boolean isDelivered;
+    @Column(name = "status", nullable = false)
+    private OrderStatusEnum status;
 
     @Column(name = "deliveryDate", nullable = true)
     @JsonFormat(pattern = "dd/MM/yyyy")

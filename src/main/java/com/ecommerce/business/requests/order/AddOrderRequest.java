@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.ecommerce.business.constants.Messages;
 import com.ecommerce.core.entities.User;
+import com.ecommerce.entities.enums.OrderStatusEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,8 @@ public class AddOrderRequest {
     @NotNull(message = "User info" + Messages.REQUIRED)
     private User user;
 
-    private boolean isDelivered;
+    @NotNull(message = "Status" + Messages.REQUIRED)
+    private OrderStatusEnum status;
 
     private Date deliveryDate;
     
