@@ -41,4 +41,12 @@ public class ProductBusinessRules {
             throw new BusinessException("No category found with given ID.");
         }
     }
+
+    public void checkStock(int productId, int amount) {
+        Product result = productRepository.findById(productId)
+        .orElseThrow(() -> new BusinessException("No product found with given ID."));
+        if(result.getStock() == 0 || (result.getStock() - amount) <= 0){
+                throw new BusinessException("Product is out of stock.");
+        }
+    }
 }

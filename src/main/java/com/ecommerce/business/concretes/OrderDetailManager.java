@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.business.abstracts.OrderDetailService;
+import com.ecommerce.business.abstracts.ProductService;
 import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.orderdetail.AddOrderDetailRequest;
 import com.ecommerce.business.requests.orderdetail.DeleteOrderDetailRequest;
@@ -31,6 +32,7 @@ public class OrderDetailManager implements OrderDetailService {
     private static final String MESSAGE = "Order detail";
     private final OrderDetailRepository orderDetailRepository;
     private final OrderDetailBusinessRules orderDetailBusinessRules;
+    private final ProductService productService;
 
     @Override
     public DataResult<List<GetAllOrderDetailResponse>> getAll() {
@@ -59,6 +61,7 @@ public class OrderDetailManager implements OrderDetailService {
         orderDetailBusinessRules.checkIfOrderExists(addOrderDetailRequest.getOrder().getId());
         orderDetailBusinessRules.checkIfOrderProductExists(addOrderDetailRequest.getProduct().getId());
         orderDetailRepository.save(MapperUtil.map(addOrderDetailRequest, OrderDetail.class));
+        productService.changeStock(addOrderDetailRequest.getProduct().getId(), addOrderDetailRequest.getQuantity());
         return new SuccessResult(MESSAGE + Messages.ADDED);
     }
 

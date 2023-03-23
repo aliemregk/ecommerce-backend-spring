@@ -83,4 +83,15 @@ public class ProductManager implements ProductService {
         return new SuccessResult(MESSAGE + Messages.DELETED);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
+    @Override
+    public void changeStock(int productId, int amount) {
+        productBusinessRules.checkIfProductExists(productId);
+        productBusinessRules.checkStock(productId, amount);
+        Product productToUpdate = productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessException("No product found with given ID."));
+        productToUpdate.setStock(productToUpdate.getStock() - amount);
+        productRepository.save(productToUpdate);
+    }
+
 }
