@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteCategoryRequest {
+public class ProductCategoryModel {
     @NotNull(message = "Category ID" + Messages.REQUIRED)
     private int id;
 }

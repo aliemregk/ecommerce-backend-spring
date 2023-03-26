@@ -14,16 +14,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCategoryRequest {
-    @NotNull(message = "Category id " + Messages.REQUIRED)
+    @NotNull(message = "Category ID" + Messages.REQUIRED)
     private int id;
 
-    @NotNull(message = "Category name " + Messages.REQUIRED)
-    @NotBlank(message = "Category name " + Messages.REQUIRED)
-    @Size(min = 2, message = "Category name " + Messages.TOO_SHORT)
-    @Size(max = 15, message = "Category name " + Messages.TOO_LONG)
+    @NotNull(message = "Category name" + Messages.REQUIRED)
+    @NotBlank(message = "Category name" + Messages.REQUIRED)
+    @Size(min = 2, message = "Category name" + Messages.TOO_SHORT)
+    @Size(max = 15, message = "Category name" + Messages.TOO_LONG)
     private String name;
 
-    @NotNull(message = "Category image " + Messages.REQUIRED)
-    @NotBlank(message = "Category image " + Messages.REQUIRED)
+    @NotNull(message = "Category image" + Messages.REQUIRED)
+    @NotBlank(message = "Category image" + Messages.REQUIRED)
     private String imageUrl;
 }

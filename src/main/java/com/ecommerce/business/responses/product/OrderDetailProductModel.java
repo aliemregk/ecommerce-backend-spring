@@ -1,6 +1,6 @@
 package com.ecommerce.business.responses.product;
 
-import com.ecommerce.business.responses.category.ProductCategoryResponse;
+import com.ecommerce.business.responses.category.ProductCategoryModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetailProductResponse {
+public class OrderDetailProductModel {
     private int id;
     private String name;
     private String description;
     private int stock;
     private double unitPrice;
     private int discount;
-    private ProductCategoryResponse category;
+    private ProductCategoryModel category;
 }

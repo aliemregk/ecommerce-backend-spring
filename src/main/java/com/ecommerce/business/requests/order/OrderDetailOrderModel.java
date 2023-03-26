@@ -1,4 +1,4 @@
-package com.ecommerce.business.requests.category;
+package com.ecommerce.business.requests.order;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteCategoryRequest {
-    @NotNull(message = "Category ID" + Messages.REQUIRED)
+public class OrderDetailOrderModel {
+    @NotNull(message = "Order ID" + Messages.REQUIRED)
     private int id;
 }

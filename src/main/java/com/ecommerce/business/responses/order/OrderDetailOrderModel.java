@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetailOrderResponse {
+public class OrderDetailOrderModel {
     private int id;
     private Date orderDate;
     private OrderStatusEnum status;

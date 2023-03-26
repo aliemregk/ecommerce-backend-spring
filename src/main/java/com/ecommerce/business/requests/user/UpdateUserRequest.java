@@ -16,8 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserRequest {
-
-    @NotNull(message = "ID" + Messages.REQUIRED)
+    @NotNull(message = "User ID" + Messages.REQUIRED)
     private int id;
 
     @NotNull(message = "First name" + Messages.REQUIRED)
@@ -49,5 +48,4 @@ public class UpdateUserRequest {
     @NotBlank(message = "Password" + Messages.REQUIRED)
     @Length(min = 6, message = "Password" + Messages.TOO_SHORT)
     private String password;
-
 }

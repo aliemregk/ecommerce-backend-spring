@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteUserRequest {
-    @NotNull(message = "ID" + Messages.REQUIRED)
+    @NotNull(message = "User ID" + Messages.REQUIRED)
     private int id;
 }

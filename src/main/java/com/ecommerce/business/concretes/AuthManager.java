@@ -8,7 +8,7 @@ import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.auth.LoginRequest;
 import com.ecommerce.business.requests.auth.RegisterRequest;
 import com.ecommerce.business.responses.auth.AuthResponse;
-import com.ecommerce.business.responses.user.AuthUserResponse;
+import com.ecommerce.business.responses.user.AuthUserModel;
 import com.ecommerce.business.rules.AuthBusinessRules;
 import com.ecommerce.core.dataaccess.UserRepository;
 import com.ecommerce.core.entities.User;
@@ -51,7 +51,7 @@ public class AuthManager implements AuthService {
         final String accessToken = jwtTokenUtil.createToken(user);
         authBusinessRules.checkToken(accessToken);
         return new SuccessDataResult<>(Messages.TOKEN_MSG,
-                new AuthResponse(accessToken, MapperUtil.map(user, AuthUserResponse.class)));
+                new AuthResponse(accessToken, MapperUtil.map(user, AuthUserModel.class)));
     }
 
 }

@@ -10,8 +10,10 @@ import com.ecommerce.business.abstracts.OrderService;
 import com.ecommerce.business.constants.Messages;
 import com.ecommerce.business.requests.order.AddOrderRequest;
 import com.ecommerce.business.requests.order.DeleteOrderRequest;
+import com.ecommerce.business.requests.order.OrderDetailOrderModel;
 import com.ecommerce.business.requests.order.UpdateOrderRequest;
 import com.ecommerce.business.requests.orderdetail.AddOrderDetailRequest;
+import com.ecommerce.business.requests.product.OrderDetailProductModel;
 import com.ecommerce.business.responses.order.GetAllByUserIdOrderResponse;
 import com.ecommerce.business.responses.order.GetAllOrderResponse;
 import com.ecommerce.business.responses.order.GetByIdOrderResponse;
@@ -24,7 +26,6 @@ import com.ecommerce.core.utilities.results.dataresults.DataResult;
 import com.ecommerce.core.utilities.results.dataresults.SuccessDataResult;
 import com.ecommerce.dataaccess.abstracts.OrderRepository;
 import com.ecommerce.entities.concretes.Order;
-import com.ecommerce.entities.concretes.Product;
 
 import lombok.AllArgsConstructor;
 
@@ -62,10 +63,10 @@ public class OrderManager implements OrderService {
     public Result add(AddOrderRequest addOrderRequest) {
         orderBusinessRules.checkIfUserExists(addOrderRequest.getUser().getId());
         final Order newOrder = orderRepository.save(MapperUtil.map(addOrderRequest, Order.class));
-        
+        final OrderDetailOrderModel orderForOrderDetail = MapperUtil.map(newOrder, OrderDetailOrderModel.class);
         for (Map.Entry<Integer, Integer> entry : addOrderRequest.getOrderProducts().entrySet()) {
-            detailService.add(new AddOrderDetailRequest(new Product(entry.getKey()),
-                    newOrder, entry.getValue()));
+            detailService.add(new AddOrderDetailRequest(new OrderDetailProductModel(entry.getKey()),
+                    orderForOrderDetail, entry.getValue()));
         }
         return new SuccessResult(MESSAGE + Messages.ADDED);
     }

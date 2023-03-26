@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteOrderDetailRequest {
-    @NotNull(message = "ID" + Messages.REQUIRED)
+    @NotNull(message = "Order Detail ID" + Messages.REQUIRED)
     private int id;
 }

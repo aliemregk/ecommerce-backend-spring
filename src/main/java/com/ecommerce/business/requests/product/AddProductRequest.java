@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.ecommerce.business.constants.Messages;
-import com.ecommerce.entities.concretes.Category;
+import com.ecommerce.business.requests.category.ProductCategoryModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,5 +40,5 @@ public class AddProductRequest {
     private int discount;
 
     @NotNull(message = "Category " + Messages.REQUIRED)
-    private Category category;
+    private ProductCategoryModel category;
 }

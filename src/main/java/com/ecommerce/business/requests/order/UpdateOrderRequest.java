@@ -1,13 +1,11 @@
 package com.ecommerce.business.requests.order;
 
 import java.util.Date;
-import java.util.HashMap;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.ecommerce.business.constants.Messages;
-import com.ecommerce.core.entities.User;
+import com.ecommerce.business.requests.user.OrderUserModel;
 import com.ecommerce.entities.enums.OrderStatusEnum;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateOrderRequest {
-    @NotNull(message = "ID" + Messages.REQUIRED)
+    @NotNull(message = "Order ID" + Messages.REQUIRED)
     private int id;
 
     @NotNull(message = "Order date" + Messages.REQUIRED)
@@ -29,13 +27,10 @@ public class UpdateOrderRequest {
     private double totalPrice;
 
     @NotNull(message = "User info" + Messages.REQUIRED)
-    private User user;
+    private OrderUserModel user;
 
     @NotNull(message = "Status" + Messages.REQUIRED)
     private OrderStatusEnum status;
 
     private Date deliveryDate;
-
-    @NotNull(message = "Order detail" + Messages.REQUIRED)
-    private HashMap<Integer, Integer> orderProducts;
 }

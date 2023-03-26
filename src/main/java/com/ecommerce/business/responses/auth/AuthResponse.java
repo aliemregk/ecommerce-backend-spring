@@ -1,6 +1,6 @@
 package com.ecommerce.business.responses.auth;
 
-import com.ecommerce.business.responses.user.AuthUserResponse;
+import com.ecommerce.business.responses.user.AuthUserModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthResponse {
     private String token;
-    private AuthUserResponse user;
+    private AuthUserModel user;
 }

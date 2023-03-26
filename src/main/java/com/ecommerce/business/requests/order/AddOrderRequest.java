@@ -7,7 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.ecommerce.business.constants.Messages;
-import com.ecommerce.core.entities.User;
+import com.ecommerce.business.requests.user.OrderUserModel;
 import com.ecommerce.entities.enums.OrderStatusEnum;
 
 import lombok.AllArgsConstructor;
@@ -26,14 +26,13 @@ public class AddOrderRequest {
     private double totalPrice;
 
     @NotNull(message = "User info" + Messages.REQUIRED)
-    private User user;
+    private OrderUserModel user;
 
     @NotNull(message = "Status" + Messages.REQUIRED)
     private OrderStatusEnum status;
 
     private Date deliveryDate;
-    
-    // product id - quantity
+
     @NotNull(message = "Order detail" + Messages.REQUIRED)
     private HashMap<Integer, Integer> orderProducts;
 }
