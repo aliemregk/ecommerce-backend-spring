@@ -11,7 +11,7 @@ import com.ecommerce.business.responses.auth.AuthResponse;
 import com.ecommerce.business.responses.user.AuthUserModel;
 import com.ecommerce.business.rules.AuthBusinessRules;
 import com.ecommerce.core.dataaccess.UserRepository;
-import com.ecommerce.core.entities.User;
+import com.ecommerce.core.entities.concretes.User;
 import com.ecommerce.core.exceptions.BusinessException;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;

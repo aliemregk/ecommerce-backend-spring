@@ -3,7 +3,7 @@ package com.ecommerce.business.rules;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.core.dataaccess.UserRepository;
-import com.ecommerce.core.entities.User;
+import com.ecommerce.core.entities.concretes.User;
 import com.ecommerce.core.exceptions.BusinessException;
 
 import lombok.AllArgsConstructor;

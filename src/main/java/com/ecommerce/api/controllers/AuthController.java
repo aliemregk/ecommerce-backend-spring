@@ -14,7 +14,7 @@ import com.ecommerce.business.abstracts.AuthService;
 import com.ecommerce.business.requests.auth.LoginRequest;
 import com.ecommerce.business.requests.auth.RegisterRequest;
 import com.ecommerce.business.responses.auth.AuthResponse;
-import com.ecommerce.core.entities.User;
+import com.ecommerce.core.entities.concretes.User;
 import com.ecommerce.core.utilities.results.dataresults.DataResult;
 
 import lombok.AllArgsConstructor;

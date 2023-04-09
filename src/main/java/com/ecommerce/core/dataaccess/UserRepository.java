@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ecommerce.core.entities.User;
+import com.ecommerce.core.entities.concretes.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 

@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.ecommerce.core.entities.User;
+import com.ecommerce.core.entities.concretes.User;
 
 import lombok.AllArgsConstructor;
 

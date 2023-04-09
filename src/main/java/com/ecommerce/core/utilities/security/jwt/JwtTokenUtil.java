@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.ecommerce.core.entities.User;
+import com.ecommerce.core.entities.concretes.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

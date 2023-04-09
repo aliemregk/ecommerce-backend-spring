@@ -14,7 +14,7 @@ import com.ecommerce.business.responses.user.GetAllUserResponse;
 import com.ecommerce.business.responses.user.GetByIdUserResponse;
 import com.ecommerce.business.rules.UserBusinessRules;
 import com.ecommerce.core.dataaccess.UserRepository;
-import com.ecommerce.core.entities.User;
+import com.ecommerce.core.entities.concretes.User;
 import com.ecommerce.core.exceptions.BusinessException;
 import com.ecommerce.core.utilities.mapper.MapperUtil;
 import com.ecommerce.core.utilities.results.Result;
